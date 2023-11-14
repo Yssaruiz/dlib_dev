@@ -14,18 +14,20 @@ p = 'shape_predictor_68_face_landmarks.dat'
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
+def drawPoints(image, faceLandmarks, startpoint, endpoint, isClosed=False):
+    points = []
+    
+    for i in range(startpoint, endpoint+1):
+        point = [faceLandmarks.part(i).x, faceLandmarks.part(i).y]
+        points.append(point)
+    
+    points = np.array(points, dtype=np.int32)
+    cv2.polylines(image, [points], isClosed, (255, 200, 0), thickness=2, lineType=cv2.LINE_8)
+
 class VideoProcessor:
     
     
-    def drawPoints(image, faceLandmarks, startpoint, endpoint, isClosed=False):
-        points = []
-        
-        for i in range(startpoint, endpoint+1):
-            point = [faceLandmarks.part(i).x, faceLandmarks.part(i).y]
-            points.append(point)
-
-        points = np.array(points, dtype=np.int32)
-        cv2.polylines(image, [points], isClosed, (255, 200, 0), thickness=2, lineType=cv2.LINE_8)
+    
     
     def recv(self, frame):
         
